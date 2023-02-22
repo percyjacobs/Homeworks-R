@@ -1,0 +1,36 @@
+Matrix 5x5
+
+```{r}
+weights_in_pounds <- matrix(runif(25, min = 160, max = 200), nrow = 5)
+```
+
+Assigning months titles
+```{r}
+months <- c("Enero","Febrero","Marzo","Abril","Mayo")
+colnames(weights_in_pounds) = months
+```
+
+Assigning names
+```{r}
+names <- c("Pedro","Pablo","Juan","Julio","Jose")
+rownames(weights_in_pounds) = names
+```
+
+Getting average weights
+```{r}
+average_weight <- rowMeans(weights_in_pounds)
+
+```
+
+Adding averages to matrix
+```{r}
+weights_with_average <- cbind(weights_in_pounds, average_weight)
+monthly_average_weight <- colMeans(weights_with_average)
+weights_with_averageV2 <- rbind(weights_with_average, monthly_average_weight)
+```
+
+Showing result Matrix
+```{r}
+print(weights_with_averageV2)
+```
+
