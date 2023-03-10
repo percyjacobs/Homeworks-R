@@ -1,0 +1,190 @@
+---
+title: "Homework 2"
+author: "Percy Jacobs"
+output:
+  html_document:
+    df_print: paged
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Funciones en R
+
+La estructura de una función en R tiene básicamente 4 elementos:
+
+-   Nombre
+
+-   Argumentos
+
+-   Cuerpo
+
+-   Valor de retorno
+
+##### Ejemplo
+
+Si se realiza una función para mostrar la secuencia de fibonacci hasta el enésimo término:
+
+nombreFunción <- function(arg, arg2, arg3, ... ) {  
+  **Cuerpo**  
+  **Retorno**  
+}  
+
+```{r}
+fibonacciSequence <- function(n) {
+  fibonacci <- numeric(n)
+  fibonacci[1] <- 0
+  if (n > 1) {
+    fibonacci[2] <- 1
+  }
+  for (i in 3:n) {
+    fibonacci[i] <- fibonacci[i-1] + fibonacci[i-2]
+  }
+  print(fibonacci)
+}
+
+fibonacciSequence(10)
+```
+\
+
+### Argumentos de una función
+
+Son variables en las cuales se pueden pasar valores al invocar la función, esto sirve para enviar datos que luego se utilizarán en la función y al terminar el proceso podrán o no devolver algún otro dato. 
+Se pueden agregar los argumentos que se deseen, solamente deberán ser separados por comas. Estos también pueden ser inicializados con un valor.
+
+```{r}
+suma <- function(a, b) {
+  return(a + b)
+}
+
+x <- suma(3,4)
+x
+```
+
+En el anterior ejemplo se logra apreciar los argumentos de entrada *a* y *b* de la función, que luego son utilizados para realizar una suma. Una función también puede dar valor a una variable, cuando se retorna un dato desde una función.
+
+\
+
+### Argumentos por valor
+Son argumentos que toman valor en la declaración de la función, siendo valores por defecto.
+
+```{r}
+suma2 <- function(a = 5, b = 5) {
+  return (a+b)
+}
+
+y <- suma2()
+y
+```
+Al no pasar los argumentos de entrada, la función toma los valores por defecto que se asignaron a las variables *a* y *b* al momento de definir la función.
+
+
+***
+## Familia *apply*
+
+La familia **apply()** pertenece al paquete base de R, conteniendo funciones para manipular porciones de datos de matrices, arrays, listas y dataframes de una forma repetitiva. Estas funciones permiten cruzar los datos de diferentes maneras y evitar el uso explicito de loops. Actúan como una entrada tipo lista, matriz o array y aplican una función con uno o varios argumentos opcionales.  
+
+### *apply()*
+
+Opera con arrays. *apply(X,MARGEN,FUNCION)*
+
+-   **X** es el array o matriz.
+
+-   **MARGEN** es una variable que define como se aplicará la función. Cuando **MARGEN=1** se aplica sobre filas, por otra parte si **MARGEN=2** se aplica sobre columnas.
+
+-   **FUNCION** es la función que se desea aplicar a los datos, puede ser cualquier función de R.
+
+
+##### Ejemplo
+
+```{r}
+m <- matrix(1:9, byrow=TRUE, nrow=3)
+m
+# suma de columnas
+apply(m, 2, sum)
+# suma de filas
+apply(m, 1, sum)
+# promedio de filas
+apply(m, 1, mean)
+```
+\
+  
+### *lapply*
+
+Se usa si se desea aplicar una función a cada elemento de una lista y obtener una lista como resultado.
+La diferencia se encuentra en:
+
+1.    Puede ser usado para otros objetos como dataframes, listas o vectores.
+
+2.    La salida retornada es una lista (de allí viene la "l" en el nombre), que tiene el mismo numero de elementos que el objeto pasado como argumento. *lapply(X, FUN)*
+
+-   **X** el objeto tipo vector.
+
+-   **FUN** función a aplicar a cada elemento de *X*.
+
+##### Ejemplo
+
+```{r}
+A <- matrix(1:9, byrow=TRUE, nrow=3)
+B <- matrix(10:21, byrow=TRUE, nrow=4)
+C <- matrix(22:27, byrow=TRUE, nrow=2)
+
+myList <- list(A,B,C)
+myList
+
+# seleccionando la columna 2 de cada array en la lista
+lapply(myList,"[",,2)
+# seleccionando un elemento en particular de cada array
+lapply(myList,"[", 2,1)
+# mayusculas a minusculas
+D <- c("HOLA","QUE","TAL")
+lapply(D, tolower)
+```
+
+\
+
+### *sapply()*
+
+Esta función es similar a *lapply()*, pero trata de simplificar la salida a la estructura de datos más simple posible. Es más eficiente que lapply(), ya que en el retorno *sapply()* guarda los valores directamente en un vector, a diferencia de lapply() que los guarda en una lista. *sapply(X, FUN)*
+
+-   **X** el objeto tipo vector.
+
+-   **FUN** función a aplicar a cada elemento de *X*.
+
+##### Ejemplo
+
+```{r}
+D
+# lapply
+lapply(D, tolower)
+# sapply
+sapply(D, tolower)
+
+# seleccionando un elemento en particular de cada array
+sapply(myList,"[", 2,1)
+```
+
+\
+
+### *vapply()*
+
+Calcula la suma de los elementos de una lista, la opción adicional "FUN.VALUE" permite especificar el tipo y tamaño de la salida. *vapply(X, FUN, FUN.VALUE)*
+
+-   **X** el objeto tipo vector.
+
+-   **FUN** es la función a aplicar, parámetro requerido.
+
+-   **FUN.VALUE** es donde se especifica el tipo de dato que se espera.
+
+##### Ejemplo
+
+```{r}
+myList
+# suma de todos los datos de cada elemento de la lista
+vapply(myList, sum, numeric(1))
+
+# promedio de todos los datos de cada elemento de la lista
+vapply(myList, mean, numeric(1))
+```
+
+
