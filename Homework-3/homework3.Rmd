@@ -36,16 +36,15 @@ alabama_votes <- dataset_results %>%
 3. Select y arrange
 ```{r}
 texas_denton_votes <- dataset_results %>%
-  filter(state == 'Texas' & county == 'Denton')
-select(texas_denton_votes, party, candidate, votes) %>%
+  filter(state == 'Texas' & county == 'Denton') %>%
+  select(party, candidate, votes) %>%
   arrange(desc(votes)) 
 ```
 
 4. Mutate y Arrange
 ```{r}
 ted_votes <- dataset_results %>%
-  filter(party == 'Republican' & candidate == 'Ted Cruz' & state == 'Alaska')
-ted_votes %>%
+  filter(party == 'Republican' & candidate == 'Ted Cruz' & state == 'Alaska') %>%
   mutate(vote_count = (votes / fraction_votes)) %>%
   arrange(desc(vote_count))
 ```
