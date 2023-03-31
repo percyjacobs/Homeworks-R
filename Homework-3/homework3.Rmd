@@ -1,0 +1,52 @@
+Percy Jacobs
+Tarea 3
+
+```{r}
+library(dplyr)
+
+#Read CSV
+dataset_results <- read.csv('/Users/percyjacobs/Downloads/primary_results.csv')
+```
+
+1. Filtrar votos
+```{r}
+florida_votes <- dataset_results %>%
+  filter(state == 'Florida')
+```
+
+2. Operadores lógicos
+  2.1. Votos para Hillary Clinton o Donald Trump
+```{r}
+HD_votes <- dataset_results %>%
+  filter((candidate == 'Hillary Clinton') | (candidate == 'Donald Trump'))
+```
+  
+  2.2. Votos para partido Demócrata y condado Shelby
+```{r}
+DemShel_votes <- dataset_results %>%
+  filter(party == 'Democrat' & county == 'Shelby')
+```
+  
+  2.3. Votos de Alabama mayores a 15000
+```{r}
+alabama_votes <- dataset_results %>%
+  filter(state == 'Alabama' & votes > 15000)
+```
+
+3. Select y arrange
+```{r}
+texas_denton_votes <- dataset_results %>%
+  filter(state == 'Texas' & county == 'Denton')
+select(texas_denton_votes, party, candidate, votes) %>%
+  arrange(desc(votes)) 
+```
+
+4. Mutate y Arrange
+```{r}
+ted_votes <- dataset_results %>%
+  filter(party == 'Republican' & candidate == 'Ted Cruz' & state == 'Alaska')
+ted_votes %>%
+  mutate(vote_count = (votes / fraction_votes)) %>%
+  arrange(desc(vote_count))
+```
+
