@@ -1,0 +1,100 @@
+Tarea 4
+Percy Jacobs
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+
+diamonds <- read_csv('diamonds.csv')
+str(diamonds)
+```
+
+1. Dispersión
+```{r}
+ggplot(diamonds, aes(x=carat, y=price)) + 
+  geom_point()
+```
+
+
+```{r}
+## Mapeando color con clarity
+ggplot(diamonds, aes(x=carat, y=price, color=clarity)) + 
+  geom_point()
+```
+
+2. Histograma
+```{r}
+ggplot(diamonds, aes(x=price)) + 
+  geom_histogram(bins=40)
+```
+```{r}
+## Escala logarítmica
+ggplot(diamonds, aes(x=price)) + 
+  geom_histogram(bins=40) +
+  scale_y_log10()
+```
+
+3. Boxplots
+```{r}
+ggplot(diamonds, aes(x=cut, y=price)) + 
+  geom_boxplot() +
+  scale_y_log10()
+```
+```{r}
+## Editando color con parámetro fill=cut
+ggplot(diamonds, aes(x=cut, y=price, fill=cut)) + 
+  geom_boxplot() +
+  scale_y_log10()
+```
+
+4. Faceting
+```{r}
+## 4.1.
+filtered_price <- diamonds %>%
+  filter(price > 1000, cut %in% c("Good", "Ideal", "Premium"))
+```
+
+```{r}
+## 4.2.
+ggplot(filtered_price, aes(x=cut, y=depth)) +
+  geom_bar(stat="identity")
+```
+
+```{r}
+## 4.3.
+ggplot(filtered_price, aes(x=cut, y=depth)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~clarity)
+```
+
+```{r}
+## 4.4.
+ggplot(filtered_price, aes(x=cut, y=depth, fill=clarity)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~clarity)
+```
+
+Grouping and summarizing
+
+```{r}
+## 1.
+median_dimension_diamond <- diamonds %>%
+  group_by(cut) %>%
+  summarize(mediaX=mean(x), mediaY=mean(y), mediaZ=mean(z))
+median_dimension_diamond
+```
+```{r}
+## 2.
+cut_premium <- diamonds %>%
+  filter(cut=='Premium') %>%
+  group_by(clarity) %>%
+  summarize(minPrice=min(price), maxPrice=max(price))
+cut_premium
+```
+
+```{r}
+## 3.
+ggplot(cut_premium, aes(x=clarity,y=maxPrice, fill=clarity)) +
+  geom_bar(stat = 'identity')
+```
+
